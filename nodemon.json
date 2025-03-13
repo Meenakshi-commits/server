@@ -1,0 +1,14 @@
+{
+  "watch": ["server"],
+  "ext": "js,json",
+  "ignore": [
+    "*.test.js",
+    "node_modules/",
+    ".git/",
+    ".env",
+    "server/node_modules/**",
+    "server/logs/**",
+    "server/temp/**"
+  ],
+  "exec": "node server.js"
+}
