@@ -56,6 +56,14 @@ router.post('/login', async (req, res) => {
 
     const payload = { userId: user._id, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Set the token as a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
     res.json({ token, role: user.role });
   } catch (err) {
     res.status(500).json({ message: err.message });
