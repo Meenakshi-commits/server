@@ -9,6 +9,7 @@ const billingRoutes = require('./routes/billingRoutes');
 const reportsRoutes = require('./routes/reportsRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const maintenanceRoutes = require('./routes/maintenanceRoutes'); // Import maintenance routes
+const userRoutes = require('./routes/userRoutes'); // Import user routes
 
 dotenv.config();
 const app = express();
@@ -36,7 +37,8 @@ app.use('/api/residents', residentRoutes);
 app.use('/api/maintenance', maintenanceRoutes); // Use maintenance routes
 app.use('/api/billing', billingRoutes);
 app.use('/api/reports', reportsRoutes);
-app.use('/api/notifications', notificationRoutes);
+app.use('/api/notifications', notificationRoutes); // Use notification routes
+app.use('/api/users', userRoutes); // Use user routes
 
 // Default route for /api
 app.get('/api', (req, res) => {

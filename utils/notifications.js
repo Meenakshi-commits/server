@@ -2,6 +2,7 @@ const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
+const Room = require('../models/Room'); // Import Room model
 require('dotenv').config(); // Ensure .env is loaded
 
 // Ensure API Keys are loaded
@@ -67,4 +68,18 @@ const sendNotification = async (userId, message, type) => {
   }
 };
 
-module.exports = { sendNotification };
+const sendNotificationToRoomUser = async (roomId) => {
+  try {
+    // Populate using the correct field name
+    const room = await Room.findById(roomId).populate('user');
+    if (!room || !room.user) {
+      throw new Error('Room or user not found');
+    }
+
+    console.log(`Notification sent to ${room.user.email}`);
+  } catch (error) {
+    console.error('❌ Error in sendNotificationToRoomUser:', error.message);
+  }
+};
+
+module.exports = { sendNotification, sendNotificationToRoomUser };

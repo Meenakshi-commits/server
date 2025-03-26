@@ -5,19 +5,30 @@ const { auth, restrictTo } = require('../middleware/auth');
 
 // Create a new resident (admin only)
 router.post('/', auth, restrictTo('admin'), async (req, res) => {
-  const { name, email, phone } = req.body;
-
   try {
+    const { name, email, phone, roomId } = req.body;
+
+    // Check if resident with email already exists
+    const existingResident = await Resident.findOne({ email });
+    if (existingResident) {
+      return res.status(400).json({ message: 'Resident with this email already exists' });
+    }
+
+    if (!name || !phone) {
+      return res.status(400).json({ message: 'Name and phone are required' });
+    }
+
     const newResident = new Resident({
       name,
       email,
       phone,
+      room: roomId
     });
 
-    const resident = await newResident.save();
-    res.json(resident);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    await newResident.save();
+    res.status(201).json({ message: 'Resident created successfully', resident: newResident });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

@@ -64,7 +64,12 @@ router.post('/login', async (req, res) => {
       sameSite: "None",
     });
 
-    res.json({ token, role: user.role });
+    // Respond based on user role
+    if (user.role === 'user') {
+      res.json({ token, role: 'resident', username: user.username });
+    } else if (user.role === 'admin') {
+      res.json({ token, role: 'admin', username: user.username });
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
