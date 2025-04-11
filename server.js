@@ -16,10 +16,23 @@ const app = express();
 
 connectDB();
 
+// Update CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173', // Local frontend
+  'https://meenakshi-hms.netlify.app', // Deployed frontend
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // Allow only the frontend URL
-  credentials: true, // Allow credentials (cookies)
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow cookies and credentials
 }));
+
 app.use(express.json());
 
 // Set Content Security Policy headers
