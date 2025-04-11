@@ -18,7 +18,6 @@ let testAccount;
 
 router.post('/signup', async (req, res) => {
   const { name, email, password, phone } = req.body;
-  console.log('Phone:', phone); // Log the phone number to verify it is being passed correctly
   try {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'User already exists' });
@@ -29,15 +28,13 @@ router.post('/signup', async (req, res) => {
     user = new User({
       email,
       password: hashedPassword,
-      phone, // Add phone number
+      phone,
       role: 'user', // Default role is 'user'
     });
     await user.save();
 
     const payload = { userId: user._id, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    await sendNotification(user._id, `Welcome, ${name}! Your account has been created as a ${user.role}.`, 'signup');
 
     res.json({ token });
   } catch (err) {

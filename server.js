@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes'); // Import auth routes
 const roomRoutes = require('./routes/roomRoutes'); // Import room routes
 const residentRoutes = require('./routes/residentRoutes');
 const billingRoutes = require('./routes/billingRoutes');
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes); // Use auth routes
 app.use('/api/rooms', roomRoutes); // Use room routes
 app.use('/api/residents', residentRoutes);
 app.use('/api/maintenance', maintenanceRoutes); // Use maintenance routes
